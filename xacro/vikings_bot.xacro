@@ -3,9 +3,11 @@
 
     <!-- Argumnets -->
     <xacro:arg name="vikings_bot_name" default="vikings_bot"/>
+    <xacro:arg name="use_gazebo" default="yes"/>
 
     <!-- Robot properties -->
     <xacro:property name="robot_name" value="$(arg vikings_bot_name)"/>
+    <xacro:property name="use_gazebo" value="$(arg use_gazebo)"/>
 
     <!-- Include robot properties -->
     <xacro:include filename="$(find vikings_bot_description)/xacro/properties.xacro"/>
@@ -17,11 +19,24 @@
     <xacro:include filename="$(find vikings_bot_description)/xacro/wheels.xacro"/>
     <xacro:include filename="$(find vikings_bot_description)/xacro/castor_wheels.xacro"/>
 
+    <!-- Inlude gazebo stuff -->
+    <!-- <xacro:include filename="$(find vikings_bot_description)/xacro/gazebo_plugins.xacro"/> -->
 
     <!-- Include Gazebo related files -->
 
 
     <!-- ROBOT -->
+    <!-- Dummy link -->
+    <link name="${robot_name}dummy_link">
+        <inertial>
+            <mass value="0.05"/>
+            <origin xyz=" 0 0 0" rpy="0 0 0" />
+            <inertia ixx="0" ixy="0" ixz="0"
+                     iyx="0" iyy="0" iyz="0"
+                     izx="0" izy="0" izz="0" />   
+        </inertial>
+    </link>
+
     <!-- Chassis link-->
     <link name="chassis_link">
         <visual>
@@ -30,7 +45,41 @@
             </geometry>
             <material name="blue"/>
         </visual>
+
+        <inertial>
+            <mass value="${vikings_bot_mass}"/>
+            <origin xyz=" 0 0 0" rpy="0 0 0" />
+            <inertia ixx="2.6245" ixy="0" ixz="0"
+                     iyx="0" iyy="5.3125" iyz="0"
+                     izx="0" izy="0" izz="7.3120" />   
+        </inertial>
+
+        <collision>
+            <geometry>
+                <box size="${vikings_bot_x} ${vikings_bot_y} ${vikings_bot_z}"/>
+            </geometry>
+        </collision>
     </link>
+    <gazebo reference="chassis_link">
+        <material>Gazebo/Blue</material>
+        <!-- friction -->
+        <mu1>100</mu1>
+        <mu2>100</mu2>
+        <!-- stiffness -->
+        <kp>100000000000000000</kp>
+        <kd>100000000000000000</kd>
+    </gazebo>
+
+    <!-- Chassis joint-->
+    <joint name="chassis_joint" type="fixed">
+        <parent link="dummy_link"/>
+        <child link="chassis_link"/>
+        <origin xyz="0 0 ${-(wheel_radius-wheel_zoff)}" rpy="0 0 0"/>
+    </joint>
+    <gazebo reference="chassis_joint">
+        <preserveFixedJoint>true</preserveFixedJoint>
+    </gazebo>
+
 
     <!-- Footprint link-->
     <link name="base_footprint_link"/>
@@ -41,9 +90,20 @@
         <child link="base_footprint_link"/>
         <origin xyz="0 0 ${-(wheel_radius-wheel_zoff)}" rpy="0 0 0"/>
     </joint>
+    <gazebo reference="base_footprint_joint">
+        <preserveFixedJoint>true</preserveFixedJoint>
+    </gazebo>
 
     <!-- Base link-->
-    <link name="base_link"/>
+    <link name="base_link">
+        <inertial>
+            <mass value="0.1"/>
+            <!-- <origin xyz=" 0 0 0" rpy="0 0 0" />
+            <inertia ixx="0" ixy="0" ixz="0"
+                     iyx="0" iyy="0" iyz="0"
+                     izx="0" izy="0" izz="0" />    -->
+        </inertial>
+    </link>
 
     <!-- Base link joint -->
     <joint name="base_link_joint" type="fixed">
@@ -51,6 +111,9 @@
         <child link="base_link"/>
         <origin xyz="${wheel_xoff} 0 ${wheel_zoff}" rpy="0 0 0"/>
     </joint>
+    <gazebo reference="base_link_joint">
+        <preserveFixedJoint>true</preserveFixedJoint>
+    </gazebo>
 
     <!-- Drive wheels -->
     <xacro:drive_wheel prefix="left" parent="base_link" y_reflect="1.0"/>
@@ -69,7 +132,31 @@
                       scale="1 1 1"/>
             </geometry>
         </visual>
+
+        <inertial>
+            <mass value="0.2"/>
+            <origin xyz=" 0 0 0" rpy="0 0 0" />
+            <inertia ixx="1e-7" ixy="0" ixz="0"
+                     iyx="0" iyy="1e-7" iyz="0"
+                     izx="0" izy="0" izz="1e-7" />   
+        </inertial>
+
+        <collision>
+            <origin xyz="0 0 0.03" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.08 0.08 0.08"/>
+            </geometry>
+        </collision>
     </link>
+    <gazebo reference="lidar_link">
+        <material>Gazebo/Grey</material>
+        <!-- friction -->
+        <mu1>100</mu1>
+        <mu2>100</mu2>
+        <!-- stiffness -->
+        <kp>100000000000000000</kp>
+        <kd>100000000000000000</kd>
+    </gazebo>
 
     <joint name="lidar_link_joint" type="fixed">
         <parent link="chassis_link"/>
@@ -86,13 +173,93 @@
                       scale="1 1 1"/>
             </geometry>
         </visual>
+
+        <inertial>
+            <mass value="0.2"/>
+            <origin xyz=" 0 0 0" rpy="0 0 0" />
+            <inertia ixx="1e-7" ixy="0" ixz="0"
+                     iyx="0" iyy="1e-7" iyz="0"
+                     izx="0" izy="0" izz="1e-7" />   
+        </inertial>
+
+        <collision>
+            <geometry>
+                <box size="0.08 0.1 0.03"/>
+            </geometry>
+        </collision>
+
     </link>
+    <gazebo reference="camera_link">
+        <material>Gazebo/Grey</material>
+        <!-- friction -->
+        <mu1>100</mu1>
+        <mu2>100</mu2>
+        <!-- stiffness -->
+        <kp>100000000000000000</kp>
+        <kd>100000000000000000</kd>
+    </gazebo>
 
     <joint name="camera_link_joint" type="fixed">
         <parent link="chassis_link"/>
         <child link="camera_link"/>
         <origin xyz="${camera_xoff} ${camera_yoff} ${camera_zoff}" rpy="0 0 0"/>
     </joint>
+
+
+    <!-- PLUGINS -->
+    <gazebo>
+        <plugin name="${robot_name}_joint_state" filename="libgazebo_ros_joint_state_publisher.so">
+            <ros>
+                <namespace>/${robot_name}</namespace>
+                <!-- <remapping>~/out:=joint_states</remapping> -->
+            </ros>
+            <update_rate>30</update_rate>
+
+            <joint_name>left_drive_wheel_joint</joint_name>
+            <joint_name>right_drive_wheel_joint</joint_name>
+
+            <joint_name>left_castor_wheel_yaw_joint</joint_name>
+            <joint_name>right_castor_wheel_yaw_joint</joint_name>
+            <joint_name>left_castor_wheel_pitch_joint</joint_name>
+            <joint_name>right_castor_wheel_pitch_joint</joint_name>
+
+        </plugin>
+    </gazebo>
+
+
+    <!-- Differential drive -->
+    <gazebo>
+        <plugin filename="libgazebo_ros_diff_drive.so" name="${robot_name}_differential_drive_controller">
+        <ros>
+            <namespace>/${robot_name}</namespace>
+            <!--
+    <argument> -ros-args -remap /cmd_vel:=/${robot_name}/cmd_vel /odom:=/${robot_name}/odom</argument>
+-->
+        </ros>
+
+        <!-- wheels -->
+        <!-- wheels RMF COMPAT -->
+        <left_joint>left_drive_wheel_joint</left_joint>
+        <right_joint>right_drive_wheel_joint</right_joint>
+        
+        <!-- kinematics -->
+        <wheel_separation>${wheel_yoff * 2}</wheel_separation>
+        <wheel_diameter>${wheel_radius * 2}</wheel_diameter>
+
+        <!-- limits -->
+        <max_wheel_torque>10000</max_wheel_torque>
+        <max_wheel_acceleration>1000</max_wheel_acceleration>
+
+        <!-- output -->
+        <publish_odom>true</publish_odom>
+        <publish_odom_tf>true</publish_odom_tf>
+        <!-- <publish_wheel_tf>false</publish_wheel_tf> -->
+
+        <odometry_frame>${robot_name}/odom</odometry_frame>
+        <robot_base_frame>${robot_name}/dummy_link</robot_base_frame>
+
+        </plugin>
+    </gazebo>
 
 
 

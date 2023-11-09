@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
     <!-- General constants -->
-    <xacro:property name="vikings_bot_mass" value="50.0"/>
+    <xacro:property name="vikings_bot_mass" value="60.0"/>
     <xacro:property name="vikings_bot_x" value="1.0"/>
     <xacro:property name="vikings_bot_y" value="0.68"/>
     <xacro:property name="vikings_bot_z" value="0.24"/>
@@ -17,7 +17,7 @@
     <!-- Castor wheels -->
     <xacro:property name="castor_base_xoff" value="0.31"/>
     <xacro:property name="castor_base_yoff" value="0.2725"/>
-    <xacro:property name="castor_base_zoff" value="0.005"/>
+    <xacro:property name="castor_base_zoff" value="0.015"/>
     <xacro:property name="castor_center_xoff" value="-0.052"/>
     <xacro:property name="castor_center_yoff" value="0.0"/>
     <xacro:property name="castor_center_zoff" value="-0.099"/>

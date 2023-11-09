@@ -15,6 +15,14 @@
   </material>
   <!-- Include Gazebo related files -->
   <!-- ROBOT -->
+  <!-- Dummy link -->
+  <link name="dummy_link">
+    <inertial>
+      <mass value="0.05"/>
+      <origin rpy="0 0 0" xyz=" 0 0 0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyx="0" iyy="0" iyz="0" izx="0" izy="0" izz="0"/>
+    </inertial>
+  </link>
   <!-- Chassis link-->
   <link name="chassis_link">
     <visual>
@@ -23,7 +31,32 @@
       </geometry>
       <material name="blue"/>
     </visual>
+    <inertial>
+      <mass value="60"/>
+      <origin rpy="0 0 0" xyz=" 0 0 0"/>
+      <inertia ixx="2.6245" ixy="0" ixz="0" iyx="0" iyy="5.3125" iyz="0" izx="0" izy="0" izz="7.3120"/>
+    </inertial>
+    <collision>
+      <geometry>
+        <box size="1.0 0.68 0.24"/>
+      </geometry>
+    </collision>
   </link>
+  <gazebo reference="chassis_link">
+    <material>Gazebo/Blue</material>
+    <!-- friction -->
+    <mu1>100</mu1>
+    <mu2>100</mu2>
+    <!-- stiffness -->
+    <kp>100000000000000000</kp>
+    <kd>100000000000000000</kd>
+  </gazebo>
+  <!-- Chassis joint-->
+  <joint name="chassis_joint" type="fixed">
+    <parent link="dummy_link"/>
+    <child link="chassis_link"/>
+    <origin rpy="0 0 0" xyz="0 0 -0.155"/>
+  </joint>
   <!-- Footprint link-->
   <link name="base_footprint_link"/>
   <!-- Footprint joint -->
@@ -32,8 +65,17 @@
     <child link="base_footprint_link"/>
     <origin rpy="0 0 0" xyz="0 0 -0.155"/>
   </joint>
+  <gazebo reference="base_footprint_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
   <!-- Base link-->
-  <link name="base_link"/>
+  <link name="base_link">
+    <inertial>
+      <mass value="0.05"/>
+      <origin rpy="0 0 0" xyz=" 0 0 0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyx="0" iyy="0" iyz="0" izx="0" izy="0" izz="0"/>
+    </inertial>
+  </link>
   <!-- Base link joint -->
   <joint name="base_link_joint" type="fixed">
     <parent link="chassis_link"/>
@@ -47,13 +89,35 @@
         <cylinder length="0.05" radius="0.125"/>
       </geometry>
     </visual>
+    <inertial>
+      <mass value="5"/>
+      <origin rpy="0 0 0" xyz=" 0 0 0"/>
+      <inertia ixx="0.0206" ixy="0" ixz="0" iyx="0" iyy="0.0390" iyz="0" izx="0" izy="0" izz="0.0206"/>
+    </inertial>
+    <collision>
+      <origin rpy="1.57 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.05" radius="0.125"/>
+      </geometry>
+    </collision>
   </link>
+  <gazebo reference="left_drive_wheel_link">
+    <material>Gazebo/Red</material>
+    <!-- friction -->
+    <mu1>100</mu1>
+    <mu2>100</mu2>
+    <!-- stiffness -->
+    <kp>1000000000000</kp>
+    <kd>1000000000000</kd>
+  </gazebo>
   <joint name="left_drive_wheel_joint" type="continuous">
     <parent link="base_link"/>
     <child link="left_drive_wheel_link"/>
     <!-- <origin xyz="0 ${y_reflect * (wheel_width/2 + wheel_yoff)} 0" rpy="0 0 0"/> -->
     <origin rpy="0 0 0" xyz="0 0.275 0"/>
     <axis xyz="0 1 0"/>
+    <limit effort="1000" velocity="1000"/>
+    <joint_properties damping="1.0" friction="1.0"/>
   </joint>
   <link name="right_drive_wheel_link">
     <visual>
@@ -62,13 +126,35 @@
         <cylinder length="0.05" radius="0.125"/>
       </geometry>
     </visual>
+    <inertial>
+      <mass value="5"/>
+      <origin rpy="0 0 0" xyz=" 0 0 0"/>
+      <inertia ixx="0.0206" ixy="0" ixz="0" iyx="0" iyy="0.0390" iyz="0" izx="0" izy="0" izz="0.0206"/>
+    </inertial>
+    <collision>
+      <origin rpy="1.57 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.05" radius="0.125"/>
+      </geometry>
+    </collision>
   </link>
+  <gazebo reference="right_drive_wheel_link">
+    <material>Gazebo/Red</material>
+    <!-- friction -->
+    <mu1>100</mu1>
+    <mu2>100</mu2>
+    <!-- stiffness -->
+    <kp>1000000000000</kp>
+    <kd>1000000000000</kd>
+  </gazebo>
   <joint name="right_drive_wheel_joint" type="continuous">
     <parent link="base_link"/>
     <child link="right_drive_wheel_link"/>
     <!-- <origin xyz="0 ${y_reflect * (wheel_width/2 + wheel_yoff)} 0" rpy="0 0 0"/> -->
     <origin rpy="0 0 0" xyz="0 -0.275 0"/>
     <axis xyz="0 1 0"/>
+    <limit effort="1000" velocity="1000"/>
+    <joint_properties damping="1.0" friction="1.0"/>
   </joint>
   <link name="left_castor_wheel_yaw_link">
     <visual>
@@ -77,21 +163,59 @@
         <cylinder length="0.01" radius="0.05"/>
       </geometry>
     </visual>
+    <inertial>
+      <mass value="0.7"/>
+      <origin rpy="0 0 0" xyz=" 0 0 0"/>
+      <inertia ixx="0.0020" ixy="0" ixz="0" iyx="0" iyy="0.0020" iyz="0" izx="0" izy="0" izz="0.0025"/>
+    </inertial>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.01" radius="0.05"/>
+      </geometry>
+    </collision>
   </link>
+  <gazebo reference="left_castor_wheel_yaw_link">
+    <material>Gazebo/Black</material>
+    <mu1>100</mu1>
+    <mu2>100</mu2>
+    <kp>100000000000000000</kp>
+    <kd>100000000000000000</kd>
+  </gazebo>
   <joint name="left_castor_wheel_yaw_joint" type="continuous">
     <parent link="chassis_link"/>
     <child link="left_castor_wheel_yaw_link"/>
     <origin rpy="0 0 0" xyz="0.31 0.2725 0"/>
     <axis xyz="0 0 1"/>
+    <limit effort="100" velocity="100"/>
+    <joint_properties damping="1.0" friction="1.0"/>
   </joint>
   <link name="left_castor_wheel_base_link">
     <visual>
-      <origin rpy="0 1.57/2 0" xyz="0 0 0"/>
+      <origin rpy="0 0.785 0" xyz="0 0 0"/>
       <geometry>
         <box size="0.03 0.03 0.07428571428571429"/>
       </geometry>
     </visual>
+    <inertial>
+      <mass value="0.7"/>
+      <origin rpy="0 0 0" xyz=" 0 0 0"/>
+      <inertia ixx="0.0020" ixy="0" ixz="0" iyx="0" iyy="0.0020" iyz="0" izx="0" izy="0" izz="0.0020"/>
+    </inertial>
+    <collision>
+      <origin rpy="0 0.785 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.03 0.03 0.07428571428571429"/>
+      </geometry>
+    </collision>
   </link>
+  <gazebo reference="left_castor_wheel_base_link">
+    <material>Gazebo/Red</material>
+    <mu1>100</mu1>
+    <mu2>100</mu2>
+    <kp>100000000000000000</kp>
+    <kd>100000000000000000</kd>
+  </gazebo>
   <joint name="left_castor_wheel_base_joint" type="fixed">
     <parent link="left_castor_wheel_yaw_link"/>
     <child link="left_castor_wheel_base_link"/>
@@ -104,12 +228,32 @@
         <cylinder length="0.05" radius="0.0612"/>
       </geometry>
     </visual>
+    <inertial>
+      <mass value="1.0"/>
+      <origin rpy="0 0 0" xyz=" 0 0 0"/>
+      <inertia ixx="0.0020" ixy="0" ixz="0" iyx="0" iyy="0.0025" iyz="0" izx="0" izy="0" izz="0.0020"/>
+    </inertial>
+    <collision>
+      <origin rpy="1.57 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.05" radius="0.0612"/>
+      </geometry>
+    </collision>
   </link>
+  <gazebo reference="left_castor_wheel_pitch_link">
+    <material>Gazebo/Black</material>
+    <mu1>50</mu1>
+    <mu2>50</mu2>
+    <kp>1000000000000</kp>
+    <kd>1000000000000</kd>
+  </gazebo>
   <joint name="left_castor_wheel_pitch_joint" type="continuous">
     <parent link="left_castor_wheel_base_link"/>
     <child link="left_castor_wheel_pitch_link"/>
     <origin rpy="0 0 0" xyz="-0.026                          0.0                          -0.0495"/>
     <axis xyz="0 1 0"/>
+    <limit effort="1000" velocity="1000"/>
+    <joint_properties damping="1.0" friction="1.0"/>
   </joint>
   <link name="right_castor_wheel_yaw_link">
     <visual>
@@ -118,21 +262,59 @@
         <cylinder length="0.01" radius="0.05"/>
       </geometry>
     </visual>
+    <inertial>
+      <mass value="0.7"/>
+      <origin rpy="0 0 0" xyz=" 0 0 0"/>
+      <inertia ixx="0.0020" ixy="0" ixz="0" iyx="0" iyy="0.0020" iyz="0" izx="0" izy="0" izz="0.0025"/>
+    </inertial>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.01" radius="0.05"/>
+      </geometry>
+    </collision>
   </link>
+  <gazebo reference="right_castor_wheel_yaw_link">
+    <material>Gazebo/Black</material>
+    <mu1>100</mu1>
+    <mu2>100</mu2>
+    <kp>100000000000000000</kp>
+    <kd>100000000000000000</kd>
+  </gazebo>
   <joint name="right_castor_wheel_yaw_joint" type="continuous">
     <parent link="chassis_link"/>
     <child link="right_castor_wheel_yaw_link"/>
     <origin rpy="0 0 0" xyz="0.31 -0.2725 0"/>
     <axis xyz="0 0 1"/>
+    <limit effort="100" velocity="100"/>
+    <joint_properties damping="1.0" friction="1.0"/>
   </joint>
   <link name="right_castor_wheel_base_link">
     <visual>
-      <origin rpy="0 1.57/2 0" xyz="0 0 0"/>
+      <origin rpy="0 0.785 0" xyz="0 0 0"/>
       <geometry>
         <box size="0.03 0.03 0.07428571428571429"/>
       </geometry>
     </visual>
+    <inertial>
+      <mass value="0.7"/>
+      <origin rpy="0 0 0" xyz=" 0 0 0"/>
+      <inertia ixx="0.0020" ixy="0" ixz="0" iyx="0" iyy="0.0020" iyz="0" izx="0" izy="0" izz="0.0020"/>
+    </inertial>
+    <collision>
+      <origin rpy="0 0.785 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.03 0.03 0.07428571428571429"/>
+      </geometry>
+    </collision>
   </link>
+  <gazebo reference="right_castor_wheel_base_link">
+    <material>Gazebo/Red</material>
+    <mu1>100</mu1>
+    <mu2>100</mu2>
+    <kp>100000000000000000</kp>
+    <kd>100000000000000000</kd>
+  </gazebo>
   <joint name="right_castor_wheel_base_joint" type="fixed">
     <parent link="right_castor_wheel_yaw_link"/>
     <child link="right_castor_wheel_base_link"/>
@@ -145,26 +327,98 @@
         <cylinder length="0.05" radius="0.0612"/>
       </geometry>
     </visual>
+    <inertial>
+      <mass value="1.0"/>
+      <origin rpy="0 0 0" xyz=" 0 0 0"/>
+      <inertia ixx="0.0020" ixy="0" ixz="0" iyx="0" iyy="0.0025" iyz="0" izx="0" izy="0" izz="0.0020"/>
+    </inertial>
+    <collision>
+      <origin rpy="1.57 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.05" radius="0.0612"/>
+      </geometry>
+    </collision>
   </link>
+  <gazebo reference="right_castor_wheel_pitch_link">
+    <material>Gazebo/Black</material>
+    <mu1>50</mu1>
+    <mu2>50</mu2>
+    <kp>1000000000000</kp>
+    <kd>1000000000000</kd>
+  </gazebo>
   <joint name="right_castor_wheel_pitch_joint" type="continuous">
     <parent link="right_castor_wheel_base_link"/>
     <child link="right_castor_wheel_pitch_link"/>
     <origin rpy="0 0 0" xyz="-0.026                          0.0                          -0.0495"/>
     <axis xyz="0 1 0"/>
+    <limit effort="1000" velocity="1000"/>
+    <joint_properties damping="1.0" friction="1.0"/>
   </joint>
   <!-- Lidar -->
   <link name="lidar_link">
     <visual>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.14" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://vikings_bot_description/meshes/sensors/rplidar.dae" scale="1 1 1"/>
       </geometry>
     </visual>
+    <inertial>
+      <mass value="0.2"/>
+      <origin rpy="0 0 0" xyz=" 0 0 0"/>
+      <inertia ixx="1e-7" ixy="0" ixz="0" iyx="0" iyy="1e-7" iyz="0" izx="0" izy="0" izz="1e-7"/>
+    </inertial>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0.03"/>
+      <geometry>
+        <box size="0.08 0.08 0.08"/>
+      </geometry>
+    </collision>
   </link>
+  <gazebo reference="lidar_link">
+    <material>Gazebo/Grey</material>
+    <!-- friction -->
+    <mu1>100</mu1>
+    <mu2>100</mu2>
+    <!-- stiffness -->
+    <kp>100000000000000000</kp>
+    <kd>100000000000000000</kd>
+  </gazebo>
   <joint name="lidar_link_joint" type="fixed">
     <parent link="chassis_link"/>
     <child link="lidar_link"/>
-    <origin rpy="0 0 0" xyz="1 0 0"/>
+    <origin rpy="0 0 0" xyz="0.53 0.0 -0.06"/>
   </joint>
   <!-- Camera -->
+  <link name="camera_link">
+    <visual>
+      <origin rpy="0 0 3.14" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://vikings_bot_description/meshes/sensors/realsense.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="0.2"/>
+      <origin rpy="0 0 0" xyz=" 0 0 0"/>
+      <inertia ixx="1e-7" ixy="0" ixz="0" iyx="0" iyy="1e-7" iyz="0" izx="0" izy="0" izz="1e-7"/>
+    </inertial>
+    <collision>
+      <geometry>
+        <box size="0.08 0.1 0.03"/>
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="camera_link">
+    <material>Gazebo/Grey</material>
+    <!-- friction -->
+    <mu1>100</mu1>
+    <mu2>100</mu2>
+    <!-- stiffness -->
+    <kp>100000000000000000</kp>
+    <kd>100000000000000000</kd>
+  </gazebo>
+  <joint name="camera_link_joint" type="fixed">
+    <parent link="chassis_link"/>
+    <child link="camera_link"/>
+    <origin rpy="0 0 0" xyz="0.5 0.0 0.06"/>
+  </joint>
 </robot>

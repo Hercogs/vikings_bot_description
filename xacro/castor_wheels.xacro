@@ -11,13 +11,39 @@
                     <cylinder length="0.01" radius="0.05"/>
                 </geometry>
             </visual>
+
+            <inertial>
+                <mass value="0.7"/>
+                <origin xyz=" 0 0 0" rpy="0 0 0" />
+                <inertia ixx="0.0020" ixy="0" ixz="0"
+                        iyx="0" iyy="0.0020" iyz="0"
+                        izx="0" izy="0" izz="0.0025" />   
+            </inertial> 
+
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <cylinder length="0.01" radius="0.05"/>
+                </geometry>
+            </collision>
         </link>
+        <gazebo reference="${prefix}_castor_wheel_yaw_link">
+            <material>Gazebo/Black</material>
+            <mu1>100</mu1>
+            <mu2>100</mu2>
+            <kp>100000000000000000</kp>
+            <kd>100000000000000000</kd>
+        </gazebo>
+
         <joint name="${prefix}_castor_wheel_yaw_joint" type="continuous">
             <parent link="${parent}"/>
             <child link="${prefix}_castor_wheel_yaw_link"/>
             <origin xyz="${castor_base_xoff} ${y_reflect * castor_base_yoff} 0" rpy="0 0 0"/>
             <axis xyz="0 0 1"/>
+            <limit effort="100" velocity="100"/>
+            <dynamics damping="1.0" friction="10.0"/>
         </joint>
+
 
         <link name="${prefix}_castor_wheel_base_link">
             <visual>
@@ -26,7 +52,30 @@
                     <box size="0.03 0.03 ${-castor_center_xoff/0.7}"/>
                 </geometry>
             </visual>
+
+            <inertial>
+                <mass value="0.7"/>
+                <origin xyz="0 0 0" rpy="0 ${1.57/2} 0"/>
+                <inertia ixx="0.0015" ixy="0" ixz="0"
+                        iyx="0" iyy="0.0012" iyz="0"
+                        izx="0" izy="0" izz="0.0017" />   
+            </inertial> 
+
+            <collision>
+                <origin xyz="0 0 0" rpy="0 ${1.57/2} 0"/>
+                <geometry>
+                    <box size="0.03 0.03 ${-castor_center_xoff/0.7}"/>
+                </geometry>
+            </collision>
         </link>
+        <gazebo reference="${prefix}_castor_wheel_base_link">
+            <material>Gazebo/Red</material>
+            <mu1>100</mu1>
+            <mu2>100</mu2>
+            <kp>100000000000000000</kp>
+            <kd>100000000000000000</kd>
+        </gazebo>
+
         <joint name="${prefix}_castor_wheel_base_joint" type="fixed">
             <parent link="${prefix}_castor_wheel_yaw_link"/>
             <child link="${prefix}_castor_wheel_base_link"/>
@@ -35,6 +84,7 @@
                          ${castor_center_zoff/2}" rpy="0 0 0"/>
         </joint>
 
+
         <link name="${prefix}_castor_wheel_pitch_link">
             <visual>
                 <origin xyz="0 0 0" rpy="1.57 0 0"/>
@@ -42,7 +92,30 @@
                     <cylinder length="${castor_wheel_width}" radius="${castor_wheel_radius}"/>
                 </geometry>
             </visual>
+
+            <inertial>
+                <mass value="1.0"/>
+                <origin xyz=" 0 0 0" rpy="0 0 0" />
+                <inertia ixx="0.0020" ixy="0" ixz="0"
+                        iyx="0" iyy="0.0025" iyz="0"
+                        izx="0" izy="0" izz="0.0020" />   
+            </inertial> 
+
+            <collision>
+                <origin xyz="0 0 0" rpy="1.57 0 0"/>
+                <geometry>
+                    <cylinder length="${castor_wheel_width}" radius="${castor_wheel_radius}"/>
+                </geometry>
+            </collision>
         </link>
+        <gazebo reference="${prefix}_castor_wheel_pitch_link">
+            <material>Gazebo/Red</material>
+            <mu1>50</mu1>
+            <mu2>50</mu2>
+            <kp>10000000</kp>
+            <kd>10000000</kd>
+        </gazebo>
+
         <joint name="${prefix}_castor_wheel_pitch_joint" type="continuous">
             <parent link="${prefix}_castor_wheel_base_link"/>
             <child link="${prefix}_castor_wheel_pitch_link"/>
@@ -50,6 +123,8 @@
                          ${castor_center_yoff/2}
                          ${castor_center_zoff/2}" rpy="0 0 0"/>
             <axis xyz="0 1 0"/>
+            <limit effort="1000" velocity="1000"/>
+            <dynamics damping="1.0" friction="10.0"/>
         </joint>
     
     </xacro:macro>
