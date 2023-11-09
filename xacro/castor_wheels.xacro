@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:macro name="castor_wheel" params="prefix parent y_reflect">
+    
+        <link name="${prefix}_castor_wheel_yaw_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <cylinder length="0.01" radius="0.05"/>
+                </geometry>
+            </visual>
+        </link>
+        <joint name="${prefix}_castor_wheel_yaw_joint" type="continuous">
+            <parent link="${parent}"/>
+            <child link="${prefix}_castor_wheel_yaw_link"/>
+            <origin xyz="${castor_base_xoff} ${y_reflect * castor_base_yoff} 0" rpy="0 0 0"/>
+            <axis xyz="0 0 1"/>
+        </joint>
+
+        <link name="${prefix}_castor_wheel_base_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 ${1.57/2} 0"/>
+                <geometry>
+                    <box size="0.03 0.03 ${-castor_center_xoff/0.7}"/>
+                </geometry>
+            </visual>
+        </link>
+        <joint name="${prefix}_castor_wheel_base_joint" type="fixed">
+            <parent link="${prefix}_castor_wheel_yaw_link"/>
+            <child link="${prefix}_castor_wheel_base_link"/>
+            <origin xyz="${castor_center_xoff/2}
+                         ${castor_center_yoff/2}
+                         ${castor_center_zoff/2}" rpy="0 0 0"/>
+        </joint>
+
+        <link name="${prefix}_castor_wheel_pitch_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="1.57 0 0"/>
+                <geometry>
+                    <cylinder length="${castor_wheel_width}" radius="${castor_wheel_radius}"/>
+                </geometry>
+            </visual>
+        </link>
+        <joint name="${prefix}_castor_wheel_pitch_joint" type="continuous">
+            <parent link="${prefix}_castor_wheel_base_link"/>
+            <child link="${prefix}_castor_wheel_pitch_link"/>
+                        <origin xyz="${castor_center_xoff/2}
+                         ${castor_center_yoff/2}
+                         ${castor_center_zoff/2}" rpy="0 0 0"/>
+            <axis xyz="0 1 0"/>
+        </joint>
+    
+    </xacro:macro>
+
+</robot>
