@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <!-- General constants -->
+    <xacro:property name="vikings_bot_mass" value="50.0"/>
+    <xacro:property name="vikings_bot_x" value="1.0"/>
+    <xacro:property name="vikings_bot_y" value="0.68"/>
+    <xacro:property name="vikings_bot_z" value="0.24"/>
+
+    <!-- Drive wheels -->
+    <xacro:property name="wheel_xoff" value="-0.27"/>
+    <xacro:property name="wheel_yoff" value="0.275"/>
+    <xacro:property name="wheel_zoff" value="-0.03"/>
+    <xacro:property name="wheel_radius" value="0.125"/>
+    <xacro:property name="wheel_width" value="0.05"/>
+
+    <!-- Castor wheels -->
+    <xacro:property name="castor_base_xoff" value="0.31"/>
+    <xacro:property name="castor_base_yoff" value="0.2725"/>
+    <xacro:property name="castor_base_zoff" value="0.005"/>
+    <xacro:property name="castor_center_xoff" value="-0.052"/>
+    <xacro:property name="castor_center_yoff" value="0.0"/>
+    <xacro:property name="castor_center_zoff" value="-0.099"/>
+    <xacro:property name="castor_wheel_radius" value="0.0612"/>
+    <xacro:property name="castor_wheel_width" value="0.05"/>
+
+    <!-- Lidar -->
+    <xacro:property name="lidar_xoff" value="0.53"/>
+    <xacro:property name="lidar_yoff" value="0.0"/>
+    <xacro:property name="lidar_zoff" value="-0.06"/>
+
+    <!-- Camera -->
+    <xacro:property name="camera_xoff" value="0.5"/>
+    <xacro:property name="camera_yoff" value="0.0"/>
+    <xacro:property name="camera_zoff" value="0.06"/>
+
+
+
+</robot>

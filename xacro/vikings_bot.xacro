@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<robot name="vikings_bot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <!-- Argumnets -->
+    <xacro:arg name="vikings_bot_name" default="vikings_bot"/>
+
+    <!-- Robot properties -->
+    <xacro:property name="robot_name" value="$(arg vikings_bot_name)"/>
+
+    <!-- Include robot properties -->
+    <xacro:include filename="$(find vikings_bot_description)/xacro/properties.xacro"/>
+
+    <!-- Include robot materials -->
+    <xacro:include filename="$(find vikings_bot_description)/xacro/materials.xacro"/>
+
+    <!-- Include macro files -->
+    <xacro:include filename="$(find vikings_bot_description)/xacro/wheels.xacro"/>
+    <xacro:include filename="$(find vikings_bot_description)/xacro/castor_wheels.xacro"/>
+
+
+    <!-- Include Gazebo related files -->
+
+
+    <!-- ROBOT -->
+    <!-- Chassis link-->
+    <link name="chassis_link">
+        <visual>
+            <geometry>
+                <box size="${vikings_bot_x} ${vikings_bot_y} ${vikings_bot_z}"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+    </link>
+
+    <!-- Footprint link-->
+    <link name="base_footprint_link"/>
+
+    <!-- Footprint joint -->
+    <joint name="base_footprint_joint" type="fixed">
+        <parent link="chassis_link"/>
+        <child link="base_footprint_link"/>
+        <origin xyz="0 0 ${-(wheel_radius-wheel_zoff)}" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Base link-->
+    <link name="base_link"/>
+
+    <!-- Base link joint -->
+    <joint name="base_link_joint" type="fixed">
+        <parent link="chassis_link"/>
+        <child link="base_link"/>
+        <origin xyz="${wheel_xoff} 0 ${wheel_zoff}" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Drive wheels -->
+    <xacro:drive_wheel prefix="left" parent="base_link" y_reflect="1.0"/>
+    <xacro:drive_wheel prefix="right" parent="base_link" y_reflect="-1.0"/>
+
+    <!-- Castor wheels -->
+    <xacro:castor_wheel prefix="left" parent="chassis_link" y_reflect="1.0"/>
+    <xacro:castor_wheel prefix="right" parent="chassis_link" y_reflect="-1.0"/>
+
+    <!-- Lidar -->
+    <link name="lidar_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 ${1.57*2}"/>
+            <geometry>
+                <mesh filename="package://vikings_bot_description/meshes/sensors/rplidar.dae"
+                      scale="1 1 1"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <joint name="lidar_link_joint" type="fixed">
+        <parent link="chassis_link"/>
+        <child link="lidar_link"/>
+        <origin xyz="${lidar_xoff} ${lidar_yoff} ${lidar_zoff}" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Camera -->
+    <link name="camera_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 ${1.57*2}"/>
+            <geometry>
+                <mesh filename="package://vikings_bot_description/meshes/sensors/realsense.dae"
+                      scale="1 1 1"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <joint name="camera_link_joint" type="fixed">
+        <parent link="chassis_link"/>
+        <child link="camera_link"/>
+        <origin xyz="${camera_xoff} ${camera_yoff} ${camera_zoff}" rpy="0 0 0"/>
+    </joint>
+
+
+
+</robot>
