@@ -27,7 +27,7 @@
 
     <!-- ROBOT -->
     <!-- Dummy link -->
-    <link name="${robot_name}dummy_link">
+    <link name="dummy_link">
         <inertial>
             <mass value="0.05"/>
             <origin xyz=" 0 0 0" rpy="0 0 0" />
@@ -74,7 +74,7 @@
     <joint name="chassis_joint" type="fixed">
         <parent link="dummy_link"/>
         <child link="chassis_link"/>
-        <origin xyz="0 0 ${-(wheel_radius-wheel_zoff)}" rpy="0 0 0"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
     <gazebo reference="chassis_joint">
         <preserveFixedJoint>true</preserveFixedJoint>
@@ -98,10 +98,10 @@
     <link name="base_link">
         <inertial>
             <mass value="0.1"/>
-            <!-- <origin xyz=" 0 0 0" rpy="0 0 0" />
+            <origin xyz=" 0 0 0" rpy="0 0 0" />
             <inertia ixx="0" ixy="0" ixz="0"
                      iyx="0" iyy="0" iyz="0"
-                     izx="0" izy="0" izz="0" />    -->
+                     izx="0" izy="0" izz="0" />   
         </inertial>
     </link>
 

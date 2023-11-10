@@ -6,6 +6,11 @@ from launch import LaunchDescription
 from launch.substitutions import Command
 from launch_ros.actions import Node
 
+"""
+Used in: spawn_robot_ros2.launch.xml
+To test 1 robot in gazebo
+"""
+
 # this is the function, that launch system will look for
 def generate_launch_description():
 
