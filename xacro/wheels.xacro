@@ -32,8 +32,8 @@
             <mu1>10</mu1>
             <mu2>10</mu2>
             <!-- stiffness -->
-            <kp>1000000</kp>
-            <kd>1000000</kd>
+            <kp>10000000</kp>
+            <kd>10000000</kd>
         </gazebo>
 
         <joint name="${prefix}_drive_wheel_joint" type="continuous">
