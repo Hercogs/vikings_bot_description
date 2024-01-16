@@ -34,6 +34,29 @@
     <xacro:property name="camera_yoff" value="0.0"/>
     <xacro:property name="camera_zoff" value="0.06"/>
 
+    <xacro:property name="camera_depth_width" value="1280"/>
+    <xacro:property name="camera_depth_height" value="720"/>
+    <xacro:property name="camera_color_width" value="1280"/>
+    <xacro:property name="camera_color_height" value="720"/>
+    <!-- 
+        Possible depth resolutions for D435i (maximum FPS for resolution is default):
+                1280x720 -> 6 FPS
+                256x144 -> 90 FPS
+                480x270 -> 15 FPS
+                480x270 -> 30 FPS
+                480x270 -> 6 FPS
+                480x270 -> 60 FPS
+                640x360 -> 30 FPS
+                640x480 -> 15 FPS
+                640x480 -> 30 FPS
+                640x480 -> 6 FPS
+                848x480 -> 10 FPS
+                848x480 -> 6 FPS
+                848x480 -> 8 FPS
+        BUG: Changing camera_depth* yields Gazebo error:
+            terminate called after throwing an instance of 'std::runtime_error'
+            [gzserver-1]   what():  unsupported colour encoding: 8UC1
+    -->
 
 
 </robot>
