@@ -22,18 +22,19 @@
             <collision>
                 <origin xyz="0 0 0" rpy="1.57 0 0"/>
                 <geometry>
-                    <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+                    <!-- <cylinder length="${wheel_width}" radius="${wheel_radius}"/> -->
+                    <sphere radius="${wheel_radius}"/>
                 </geometry>
             </collision>
         </link>
         <gazebo reference="${prefix}_drive_wheel_link">
             <material>Gazebo/Red</material>
             <!-- friction -->
-            <mu1>10</mu1>
-            <mu2>10</mu2>
+            <!-- <mu1>100</mu1>
+            <mu2>100</mu2> -->
             <!-- stiffness -->
-            <kp>10000000</kp>
-            <kd>10000000</kd>
+            <!-- <kp>10000000</kp>
+            <kd>10000000</kd> -->
         </gazebo>
 
         <joint name="${prefix}_drive_wheel_joint" type="continuous">
@@ -43,7 +44,7 @@
             <origin xyz="0 ${y_reflect * wheel_yoff} 0" rpy="0 0 0"/>
             <axis xyz="0 1 0"/>
             <limit effort="1000" velocity="1000"/>
-            <dynamics damping="1.0" friction="10.0"/>
+            <!-- <dynamics damping="1.0" friction="10.0"/> -->
         </joint>
 
     </xacro:macro>

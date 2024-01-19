@@ -27,7 +27,8 @@
     <!-- Lidar -->
     <xacro:property name="lidar_xoff" value="0.53"/>
     <xacro:property name="lidar_yoff" value="0.0"/>
-    <xacro:property name="lidar_zoff" value="-0.06"/>
+    <xacro:property name="lidar_zoff" value="-0.02"/>
+    <!-- <xacro:property name="lidar_zoff" value="-0.06"/> -->
 
     <!-- Camera -->
     <xacro:property name="camera_xoff" value="0.51"/>
