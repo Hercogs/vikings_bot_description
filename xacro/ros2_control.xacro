@@ -14,7 +14,7 @@
             <param name="baud_rate">57600</param>
             <param name="timeout_ms">1000</param>
             <param name="enc_counts_per_rev">42</param>
-            <param name="reducer_ratio">10</param> <!-- 1, if not used -->
+            <param name="reducer_ratio">20</param> <!-- 1, if not used -->
         </hardware>
       </xacro:unless>
       <xacro:if value="${use_mock_hardware}">
