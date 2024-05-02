@@ -21,7 +21,8 @@ def launch_setup(context):
     robot_file = LaunchConfiguration("robot_file").perform(context)
     use_sim = LaunchConfiguration("use_sim").perform(context)
 
-    robot_state_publisher_name = vikings_bot_name + "_robot_state_publisher"
+    # robot_state_publisher_name = vikings_bot_name + "_robot_state_publisher"
+    robot_state_publisher_name = "robot_state_publisher"
     ### DATA INPUT END ###
 
     package_description = 'vikings_bot_description'

@@ -25,8 +25,8 @@
 
 
     <!-- ROBOT -->
-    <!-- Dummy link -->
-    <link name="dummy_link">
+    <!-- Base link -->
+    <link name="base_link">
         <inertial>
             <mass value="0.05"/>
             <origin xyz=" 0 0 0" rpy="0 0 0" />
@@ -71,9 +71,10 @@
 
     <!-- Chassis joint-->
     <joint name="chassis_joint" type="fixed">
-        <parent link="dummy_link"/>
+        <parent link="base_link"/>
         <child link="chassis_link"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
+        <origin xyz="${-(wheel_xoff)} 0 ${-(wheel_zoff)}" rpy="0 0 0"/>
     </joint>
     <gazebo reference="chassis_joint">
         <preserveFixedJoint>true</preserveFixedJoint>
@@ -85,7 +86,7 @@
 
     <!-- Footprint joint -->
     <joint name="base_footprint_joint" type="fixed">
-        <parent link="chassis_link"/>
+        <parent link="base_link"/>
         <child link="base_footprint_link"/>
         <origin xyz="0 0 ${-(wheel_radius-wheel_zoff)}" rpy="0 0 0"/>
     </joint>
@@ -93,26 +94,6 @@
         <preserveFixedJoint>true</preserveFixedJoint>
     </gazebo>
 
-    <!-- Base link-->
-    <link name="base_link">
-        <inertial>
-            <mass value="0.1"/>
-            <origin xyz=" 0 0 0" rpy="0 0 0" />
-            <inertia ixx="0" ixy="0" ixz="0"
-                     iyx="0" iyy="0" iyz="0"
-                     izx="0" izy="0" izz="0" />   
-        </inertial>
-    </link>
-
-    <!-- Base link joint -->
-    <joint name="base_link_joint" type="fixed">
-        <parent link="chassis_link"/>
-        <child link="base_link"/>
-        <origin xyz="${wheel_xoff} 0 ${wheel_zoff}" rpy="0 0 0"/>
-    </joint>
-    <gazebo reference="base_link_joint">
-        <preserveFixedJoint>true</preserveFixedJoint>
-    </gazebo>
 
     <!-- Drive wheels -->
     <xacro:drive_wheel prefix="left" parent="base_link" y_reflect="1.0"/>
