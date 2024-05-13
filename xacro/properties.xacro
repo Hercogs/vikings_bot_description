@@ -31,10 +31,14 @@
     <!-- <xacro:property name="lidar_zoff" value="-0.06"/> -->
 
     <!-- Camera -->
-    <xacro:property name="camera_xoff" value="0.5"/>
+    <xacro:property name="camera_xoff" value="0.51"/>
     <xacro:property name="camera_yoff" value="0.0"/>
     <xacro:property name="camera_zoff" value="0.06"/>
 
+    <xacro:property name="camera_depth_width" value="640"/>
+    <xacro:property name="camera_depth_height" value="480"/>
+    <xacro:property name="camera_color_width" value="640"/>
+    <xacro:property name="camera_color_height" value="480"/>
 
 
 </robot>
