@@ -146,7 +146,7 @@
 
     <!-- Camera -->
     <!-- realsense2_description package manages camera's description (geometry etc.) -->
-    <!--TODO: add use sim time parameter to use_nominal_extrinsics (should only be true in sim)-->
+    <!-- using nominal extrinsics only in sim because realsense-ros provides it for real camera -->
     <xacro:sensor_d415 parent="chassis_link" use_nominal_extrinsics="${use_sim}">
         <origin xyz="${camera_xoff} ${camera_yoff} ${camera_zoff}" rpy="0 0 0"/>
     </xacro:sensor_d415>
@@ -318,7 +318,8 @@
         <depthUpdateRate>30.0</depthUpdateRate>
         <colorUpdateRate>30.0</colorUpdateRate>
         <infraredUpdateRate>1.0</infraredUpdateRate>
-        <depthTopicName>${robot_name}/camera/depth/image_rect_raw</depthTopicName>
+        <!--For simulation assume that depth image is aligned in color frame (for real realsense it will be)-->
+        <depthTopicName>${robot_name}/camera/aligned_depth_to_color/image_raw</depthTopicName>
       	<depthCameraInfoTopicName>${robot_name}/camera/depth/camera_info</depthCameraInfoTopicName>
       	<colorTopicName>${robot_name}/camera/color/image_raw</colorTopicName>
       	<colorCameraInfoTopicName>${robot_name}/camera/color/camera_info</colorCameraInfoTopicName>
