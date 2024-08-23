@@ -118,11 +118,11 @@ def launch_setup(context):
         ),
     )
 
-    # Delay start of robot_controller after `joint_state_broadcaster`
-    delay_robot_controller_spawner_after_joint_state_broadcaster_spawner = RegisterEventHandler(
+    # Delay start of joint_state_broadcaster after `robot_controller`
+    delay_joint_state_broadcaster_after_robot_controller_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
-            target_action=joint_state_broadcaster_spawner,
-            on_exit=[robot_controller_spawner],
+            target_action=robot_controller_spawner,
+            on_exit=[joint_state_broadcaster_spawner],
         ),
         condition = IfCondition(
             NotSubstitution(LaunchConfiguration("use_sim"))
@@ -147,11 +147,11 @@ def launch_setup(context):
     
 
     return [
-        robot_state_publisher_node,
         control_node,
+        robot_state_publisher_node,
         odom_filter_node,
         joint_state_broadcaster_spawner,
-        delay_robot_controller_spawner_after_joint_state_broadcaster_spawner
+        delay_joint_state_broadcaster_after_robot_controller_spawner
 
     ]#rviz_node
 
