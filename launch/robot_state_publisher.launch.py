@@ -21,7 +21,8 @@ def launch_setup(context):
     robot_file = LaunchConfiguration("robot_file").perform(context)
     use_sim = LaunchConfiguration("use_sim").perform(context)
 
-    robot_state_publisher_name = vikings_bot_name + "_robot_state_publisher"
+    # robot_state_publisher_name = vikings_bot_name + "_robot_state_publisher"
+    robot_state_publisher_name = "robot_state_publisher"
     ### DATA INPUT END ###
 
     package_description = 'vikings_bot_description'
@@ -60,9 +61,21 @@ def launch_setup(context):
                     {robot_controller_param_file}],
         output="both",
         remappings=[
+            # Only because of bug in diffdrive controller
             ("diffbot_base_controller/cmd_vel_unstamped", "cmd_vel"),
-            ("diffbot_base_controller/odom", "odom"),
+            ("diffbot_base_controller/odom", "odom_raw"),
         ],
+        condition = IfCondition(
+            NotSubstitution(LaunchConfiguration("use_sim"))
+        ),
+    )
+
+    # Only because of bug in diffdrive controller
+    odom_filter_node = Node(
+        namespace=vikings_bot_name,
+        package="diffdrive_roboteq_sbl",
+        executable="odom_filter",
+        output="both",
         condition = IfCondition(
             NotSubstitution(LaunchConfiguration("use_sim"))
         ),
@@ -110,10 +123,7 @@ def launch_setup(context):
         event_handler=OnProcessExit(
             target_action=joint_state_broadcaster_spawner,
             on_exit=[robot_controller_spawner],
-        ),
-        condition = IfCondition(
-            NotSubstitution(LaunchConfiguration("use_sim"))
-        ),
+        )
     )
 
 
@@ -134,8 +144,9 @@ def launch_setup(context):
     
 
     return [
-        robot_state_publisher_node,
         control_node,
+        robot_state_publisher_node,
+        odom_filter_node,
         joint_state_broadcaster_spawner,
         delay_robot_controller_spawner_after_joint_state_broadcaster_spawner
 
