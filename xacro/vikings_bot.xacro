@@ -318,7 +318,8 @@
         <depthUpdateRate>30.0</depthUpdateRate>
         <colorUpdateRate>30.0</colorUpdateRate>
         <infraredUpdateRate>1.0</infraredUpdateRate>
-        <depthTopicName>${robot_name}/camera/depth/image_rect_raw</depthTopicName>
+        <!-- realsense uses aligned depth to color topic. For sim assume that default depth topic is aligned with color frame-->
+        <depthTopicName>${robot_name}/camera/aligned_depth_to_color/image_raw</depthTopicName>
       	<depthCameraInfoTopicName>${robot_name}/camera/depth/camera_info</depthCameraInfoTopicName>
       	<colorTopicName>${robot_name}/camera/color/image_raw</colorTopicName>
       	<colorCameraInfoTopicName>${robot_name}/camera/color/camera_info</colorCameraInfoTopicName>
